@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    container_name: adminer_backend_post  
+    depends_on:
+      - postgres
+    networks:
+      - backend_post_network  
+    ports:
+      - "8080:8080"
+    environment:
+      - ADMINER_DESIGN=pepa-linha-dark
+
+  backend:  
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: backend_post  
+    container_name: backend_post  
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_SERVER=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=backend_post_db 
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Secret$$123
+    networks:
+      - backend_post_network 
+    volumes:
+      - ".:/app"
+
+  postgres:
+    image: postgres:17
+    container_name: postgres_backend_post  
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Secret$$123
+      - POSTGRES_DB=backend_post_db
+    networks:
+      - backend_post_network  
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+networks:
+  backend_post_network: 
+    name: backend_post_network
+
+volumes:
+  postgres_data:
+    name: backend_post_postgres_data  
