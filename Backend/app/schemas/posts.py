@@ -3,26 +3,26 @@ from typing import Optional
 from pydantic import UUID4, BaseModel
 
 
-class BebidasBase(BaseModel):
+class PostBase(BaseModel):
     slug: str  | None= None 
     title: str | None = None
     desc: str | None = None
-    content: int | None = None
+    content: str | None = None
     img: Optional[str] = None
 
 
-class BebidasCreate(BebidasBase):
+class PostCreate(PostBase): 
     pass
 
-class BebidasUpdate(BebidasBase):
+class PostUpdate(PostBase):
     pass
 
-class BebidasInDb(BebidasBase):
+class PostInDb(PostBase):
     uuid: UUID4
     created_at: datetime = None
     deleted_at: Optional[datetime] = None
     class Config:
         from_attributes = True
 
-class Bebidas(BebidasInDb):
+class Post(PostInDb):
     pass

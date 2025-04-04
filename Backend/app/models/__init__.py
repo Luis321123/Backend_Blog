@@ -1,2 +1,2 @@
-from app.models.Bebida import Bebida
+from app.models.Post import Post
   
