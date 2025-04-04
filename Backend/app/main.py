@@ -37,5 +37,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Incluye routers
-app.include_router(health.router)
+@app.get("/")
+async def root():
+    return {"message": "Hi, I am Louis - Your app is done & working, if u have problems contact me (luis1233210e@gmail.com)."}
