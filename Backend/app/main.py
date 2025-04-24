@@ -2,42 +2,32 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.api import api_router
 from app.core.settings import get_settings
-from app.api.api import router_auth
 
 settings = get_settings()
 
-
-def create_application() -> FastAPI:
+def create_application():
     application = FastAPI(
-        title="Gestión de inventario",
+        title="MS Protocolos",
         version="0.0.1",
-        description="Bienvenido a Consuming.",
-        docs_url="/docs",
+        description="Bienvenido a MS Protocolos.",
+        docs_url="/docs", 
         swagger_ui_parameters={
-            "defaultModelsExpandDepth": -1,
-            "defaultModelExpandDepth": -1,
+            "defaultModelsExpandDepth": -1, 
+            "defaultModelExpandDepth": -1,   
             "docExpansion": "none",
-            "persistAuthorization": True,
-            "tryItOutEnabled": True,
-            "syntaxHighlight.theme": "obsidian",
-            "displayOperationId": True,
-            # Configuración clave para el login simple
-            "initOAuth": {
-                "useBasicAuthenticationWithAccessCodeGrant": True,
-                "defaultUsername": settings.FIRST_ADMIN_EMAIL,
-                "defaultPassword": settings.FIRST_ADMIN_PASSWORD
-            }
+            "persistAuthorization": True,    
+            "tryItOutEnabled":True,           
         }
     )
 
-    application.include_router(api_router, prefix="/api")
-    
+    application.include_router(api_router)
     return application
 
 app = create_application()
 
-# Configuración CORS
-origins = [str(settings.FRONTEND_HOST)]
+origins = [
+    str(settings.FRONTEND_HOST)
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -46,7 +36,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(router_auth, prefix="/auth")
 
 @app.get("/")
 async def root():

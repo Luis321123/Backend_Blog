@@ -7,6 +7,6 @@ from app.models.User import User as UserModel
 
 class ServiceUser(CRUDBase[UserModel]):
     def get_by_name(self, db: Session, name: str) -> Optional[UserInDB]:
-        return db.query(self.model).filter(self.model.name == name).first()
+        return db.query(self.model).filter(self.model.username == name).first()
 
 user = ServiceUser(UserModel)

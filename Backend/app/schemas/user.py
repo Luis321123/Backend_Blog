@@ -12,7 +12,6 @@ class UserBase(BaseModel):
     username: str = None
     last_name: str = None
     is_active: bool = True
-    is_superuser: bool = False
     email: EmailStr = None
     birth: date | None = None
     phone: str = None

@@ -14,6 +14,7 @@ class BaseModel(Base):
         return cls.deleted_at.isnot(None)   
         
     def soft_delete(self):
+        self.is_active = False
         self.deleted_at = func.now()
     
  #Esto posibilita hacer soft delete
