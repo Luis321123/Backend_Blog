@@ -25,6 +25,9 @@ def hash_password(password: str) -> str:
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
+def get_password_hash(password: str) -> str:
+    """Genera hash de contraseña"""
+    return pwd_context.hash(password)
 
 def is_password_strong_enough(password: str) -> bool:
     if len(password) < 8:

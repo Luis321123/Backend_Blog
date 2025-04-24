@@ -1,77 +1,47 @@
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 from sqlalchemy.orm import Session
-
-from app.api.deps import get_current_user  # Cambiado de get_current_church_user
+from datetime import timedelta
+from app.schemas.token import Token
+from app.schemas.user import User
+from app.controllers.auth import AuthController
 from app.core.database import get_session
-from app.controllers.auth import auth as auth_controller
-#from app.schemas.auth_schemas import PasswordResetRequest, PasswordReset
-from app.schemas.user import UserInDB  # Cambiado de ChurchUserInDB
+from app.core.settings import get_settings
+from app.api.deps import get_current_user
 
-router = APIRouter()
+settings=get_settings()
 
-@router.post('/login', status_code=status.HTTP_200_OK)
-async def user_login(
-    data: OAuth2PasswordRequestForm = Depends(),
-    session: Session = Depends(get_session)
-):
-    """Autenticación básica con username/password"""
-    data_in = await auth_controller.post_login_token(db=session, obj_in=data)
-    return JSONResponse(data_in)
+router = APIRouter(tags=["Authentication"])
 
-@router.put("/logout", status_code=status.HTTP_200_OK)
-async def user_logout(
-    session: Session = Depends(get_session),
-    current_user: UserInDB = Depends(get_current_user)  # Cambiado de church_user
-):
-    """Cierre de sesión"""
-    await auth_controller.post_logout_user(db=session, user=current_user)
-    return JSONResponse(content='Sesión cerrada correctamente')
-
-@router.post("/forgot-password", status_code=status.HTTP_200_OK)
-#async def forgot_password(
- #   data: PasswordResetRequest,
-  #  background_tasks: BackgroundTasks,
-   # db: Session = Depends(get_session)
-#):
-   # """Solicitud de recuperación de contraseña"""
- #   await auth_controller.forgot_password(
-  #      email=data.email,
-   #     db=db,
-    #    background_tasks=background_tasks
-    #)
-    #return JSONResponse(content='Se ha enviado un correo para restablecer la contraseña')
-
-#@router.put("/reset-password", status_code=status.HTTP_200_OK)
-#async def reset_password(
- #   obj_in: PasswordReset,
-  #  session: Session = Depends(get_session)
-#):
-#    """Restablecimiento de contraseña"""
- #   await auth_controller.reset_password(obj_in=obj_in, db=session)
-  #  return JSONResponse(content='Contraseña actualizada correctamente')
-
-class GoogleToken(BaseModel):
-    token: str
-
-@router.post("/login/google", status_code=status.HTTP_200_OK)
-async def login_google(
-    token_data: GoogleToken,
+@router.post("/login", response_model=Token)
+async def login_for_access_token(
+    form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_session)
 ):
-    """Autenticación con Google (versión simplificada)"""
-    try:
-        response = await auth_controller.google_login(
-            token=token_data.token,
-            db=db
-        )
-        return JSONResponse(response)
-    except HTTPException as e:
-        raise e
-    except Exception as e:
+    auth_controller = AuthController(db)
+    user = auth_controller.authenticate_user(form_data.username, form_data.password)
+    
+    if not user:
         raise HTTPException(
-            status_code=500,
-            detail=f"Error en autenticación con Google: {str(e)}"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
         )
+    
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = auth_controller.create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expires
+    )
+    
+    return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/me",)
+async def read_users_me(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_session)
+):
+    auth_controller = AuthController(db)
+    role = auth_controller.get_current_user_role(current_user)
+    
+    return role
+    

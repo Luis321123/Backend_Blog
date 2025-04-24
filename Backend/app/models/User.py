@@ -16,16 +16,16 @@ class User(BaseModel):
         UUID(150), primary_key=True, index=True, default=uuid4
     )
 
-    name = Column(String(150))
+    username = Column(String(150))
     last_name = Column(String(150))
-    is_superuser=Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
+    role_uuid = Column(UUID(36), ForeignKey('roles.uuid'))
     email = Column(String(255), unique=True, index=True)
     birth = Column(Date, nullable=True)
     phone = Column(String(20), index=True)
     address = Column(String(125), index=True)
     gender = Column(String(12))
-    password = Column(String(100))
+    hashed_password = Column(String(255))
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     deleted_at = Column(DateTime, nullable=True, default=None)
     role_uuid = Column(UUID(150), ForeignKey('roles.uuid'))
@@ -36,4 +36,5 @@ class User(BaseModel):
     #RELEACIONES
 
     roles = relationship("Roles", back_populates="users", uselist=False)
+    role_uuid = Column(UUID(as_uuid=True), ForeignKey('roles.uuid'))
     user_session = relationship("UserSession", back_populates="users", uselist=False)

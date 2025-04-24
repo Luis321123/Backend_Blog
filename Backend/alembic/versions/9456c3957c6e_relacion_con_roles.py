@@ -1,8 +1,8 @@
-"""Cambio de campos en User
+"""relacion con roles
 
-Revision ID: 61dd55a06a19
-Revises: fb512b9100b6
-Create Date: 2025-04-05 18:49:53.315352
+Revision ID: 9456c3957c6e
+Revises: 8e768af4f916
+Create Date: 2025-04-24 20:02:55.853760
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '61dd55a06a19'
-down_revision: Union[str, None] = 'fb512b9100b6'
+revision: str = '9456c3957c6e'
+down_revision: Union[str, None] = '8e768af4f916'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

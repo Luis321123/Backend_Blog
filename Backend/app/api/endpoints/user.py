@@ -13,20 +13,8 @@ router = APIRouter(prefix="/users", tags=["users"])
 @router.post('/', status_code=status.HTTP_201_CREATED)
 async def create_user(
     user_data: UserCreate,
-    session: Session = Depends(get_session),
-    current_user: Optional[dict] = Depends(get_current_user)  # Opcional si quieres proteger la ruta
+    session: Session = Depends(get_session)
 ):
-    """
-    Crea un nuevo usuario en el sistema
-    
-    Parámetros:
-    - user_data: Datos del usuario a crear (email, password, etc.)
-    - session: Sesión de base de datos
-    - current_user: Usuario autenticado (opcional para rutas protegidas)
-    
-    Retorna:
-    - El usuario creado en formato UserResponse
-    """
     try:
         # Verifica si el usuario ya existe (implementa esta lógica en tu controller)
         existing_user = await user_controller.get_user_by_email(session, user_data.email)

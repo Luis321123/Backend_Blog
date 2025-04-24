@@ -48,7 +48,7 @@ class UserController(CRUDBase[User, UserCreate, UserUpdate]):
             db_user = User(
                 email=user_data.email,
                 hashed_password=hashed_password,
-                username=user_data.username,
+                name=user_data.username,
                 is_active=True,
                 is_superuser=False  # Por defecto no es superusuario
             )

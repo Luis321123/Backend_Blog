@@ -9,7 +9,7 @@ class Gender(Enum):
     OTHER = "other"
 
 class UserBase(BaseModel):
-    name: str = None
+    username: str = None
     last_name: str = None
     is_active: bool = True
     is_superuser: bool = False
@@ -21,7 +21,7 @@ class UserBase(BaseModel):
     
 # Properties to receive via API on creation
 class UserCreate(UserBase):
-    password: str
+    hashed_password: str
 
 class UserUpdate(UserBase):
     pass

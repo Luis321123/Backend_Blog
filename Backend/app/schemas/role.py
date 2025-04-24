@@ -6,7 +6,7 @@ from pydantic import UUID4, BaseModel
 class Rol(BaseModel):
     user_uuid: UUID4 = None
     name: str = None
-    
+    description:str = None
 # Properties to receive via API on creation
 class RolCreated(Rol):
    pass
