@@ -9,10 +9,10 @@
 **Nuestra API de Blog sigue una arquitectura clara de 3 capas:**
 
 </div>
-
+<div align="center">
 1. **Blog's UI (Interfaz de Usuario(en proceso))**: 
    - Frontend que consume nuestra API RESTful
-   - Desarrollado con [tu framework frontend: React/Vue/Angular/etc.]
+   - Desarrollado con ReactJS
    - Se comunica exclusivamente con la capa de la API
 
 2. **Blog API (Capa de Servicio)**:
@@ -26,13 +26,13 @@
    - Se comunica con la base de datos
 
 3. **Database (Almacenamiento)**:
-   - Base de datos PostgreSQL/MySQL/MongoDB [elige la tuya]
+   - Base de datos PostgreSQL
    - Almacena:
      - Usuarios y credenciales
      - Artículos del blog con su contenido
      - Comentarios y relaciones
    - Garantiza persistencia y consistencia de datos
-
+</div>
 <div align="center">
 
 ### Flujo típico:
