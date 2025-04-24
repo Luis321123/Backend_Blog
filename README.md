@@ -6,40 +6,44 @@
 
 <div align="center">
 
-**Nuestra API de Blog sigue una arquitectura clara de 3 capas:**
+**Esta API de Blog sigue una arquitectura clara de 3 capas:**
 
 </div>
 <div align="center">
-1. **Blog's UI (Interfaz de Usuario(en proceso))**: 
-   - Frontend que consume nuestra API RESTful
-   - Desarrollado con ReactJS
-   - Se comunica exclusivamente con la capa de la API
 
-2. **Blog API (Capa de Servicio)**:
-   - Desarrollada con FastAPI (Python)
-   - Proporciona endpoints RESTful para:
-     - Gestión de usuarios (registro, autenticación, perfiles)
-     - CRUD de artículos del blog
-     - Comentarios y valoraciones
-     - Búsqueda y filtrado
-   - Valida datos y gestiona la lógica de negocio
-   - Se comunica con la base de datos
+<br> 1. **Blog's UI (Interfaz de Usuario(en proceso))**:
+     <br>
+     <br> - Frontend que consume nuestra API RESTful
+     <br> - Desarrollado con ReactJS
+     <br> - Se comunica exclusivamente con la capa de la API
 
-3. **Database (Almacenamiento)**:
-   - Base de datos PostgreSQL
-   - Almacena:
-     - Usuarios y credenciales
-     - Artículos del blog con su contenido
-     - Comentarios y relaciones
-   - Garantiza persistencia y consistencia de datos
+<br> 3. **Blog API (Capa de Servicio)**:
+    <br>
+   <br> - Desarrollada con FastAPI (Python)
+     <br>  Proporciona endpoints RESTful para:
+     <br> - Gestión de usuarios (registro, autenticación, perfiles)
+     <br> - CRUD de artículos del blog
+   <br>   - Comentarios y valoraciones
+     <br> - Búsqueda y filtrado
+   <br> - Valida datos y gestiona la lógica de negocio
+  <br>  - Se comunica con la base de datos
+
+<br> 4. **Database (Almacenamiento)**:
+    <br>
+    <br> - Base de datos PostgreSQL
+    <br> - Almacena:
+     <br> - Usuarios y credenciales
+     <br> - Artículos del blog con su contenido
+     <br>- Comentarios y relaciones
+    <br> - Garantiza persistencia y consistencia de datos
 </div>
 <div align="center">
 
 ### Flujo típico:
-1. El usuario realiza una acción en la UI  
-2. La UI hace una petición HTTP a la API  
-3. La API procesa la petición, interactúa con la DB si es necesario  
-4. La API devuelve una respuesta JSON a la UI  
-5. La UI actualiza su estado según la respuesta  
+<br>1. - El usuario realiza una acción en la UI  
+<br>2. - La UI hace una petición HTTP a la API  
+<br>3. - La API procesa la petición, interactúa con la DB si es necesario  
+<br>4. - La API devuelve una respuesta JSON a la UI  
+<br>5. - La UI actualiza su estado según la respuesta  
 
 </div>
