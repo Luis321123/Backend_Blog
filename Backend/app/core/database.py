@@ -4,11 +4,16 @@ from sqlalchemy import create_engine
 
 from app.core.settings import get_settings
 
-Base = declarative_base()
 settings = get_settings()
 
-engine = create_engine(settings.DATABASE_URI,connect_args={"options": f"-c timezone=America/Santiago"})
+engine = create_engine(settings.DATABASE_URI,
+                       pool_pre_ping=True,
+                       pool_recycle=3600,
+                       pool_size=20,
+                       max_overflow=0)
+
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+Base = declarative_base()
 
 
 def get_session() -> Generator:

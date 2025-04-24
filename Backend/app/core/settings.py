@@ -16,6 +16,13 @@ class Settings(BaseSettings):
      # Backend App
     BACKEND_HOST: str = os.environ.get("BACKEND_HOST", "http://localhost:8000")
     
+    #JWT SECRET KEYS:
+    JWT_SECRET: str = os.environ.get("JWT_SECRET")
+    JWT_ALGORITHM: str = os.environ.get("ACCESS_TOKEN_ALGORITHM")
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.environ.get("ACCESS_TOKEN_EXPIRE_MINUTES"))
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = int(os.environ.get("REFRESH_TOKEN_EXPIRE_MINUTES" ))
+
+
     # PostgreSQL Database Config
     POSTGRES_USER: str = os.environ.get("POSTGRES_USER")  
     POSTGRES_PASSWORD: str = os.environ.get("POSTGRES_PASSWORD")  
@@ -31,7 +38,7 @@ class Settings(BaseSettings):
     FIRST_ADMIN_ACCOUNT_LASTNAME: str = os.environ.get("FIRST_ADMIN_ACCOUNT_LASTNAME")
 
     # App Secret Key
-    SECRET_KEY: str = os.environ.get("SECRET_KEY", "8deadce9449770680910741063cd0a3fe0acb62a8978661f421bbcbb66dc41f1")
+    SECRET_KEY: str = os.environ.get("SECRET_KEY")
     
 @lru_cache()
 def get_settings() -> Settings:

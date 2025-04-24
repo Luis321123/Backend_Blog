@@ -5,29 +5,37 @@ from app.core.settings import get_settings
 
 settings = get_settings()
 
-def create_application():
+def create_application() -> FastAPI:
     application = FastAPI(
-        title=" Gestion de inventario",
+        title="Gestión de inventario",
         version="0.0.1",
         description="Bienvenido a Consuming.",
-        docs_url="/docs", 
+        docs_url="/docs",
         swagger_ui_parameters={
-            "defaultModelsExpandDepth": -1, 
-            "defaultModelExpandDepth": -1,   
+            "defaultModelsExpandDepth": -1,
+            "defaultModelExpandDepth": -1,
             "docExpansion": "none",
-            "persistAuthorization": True,    
-            "tryItOutEnabled":True,           
+            "persistAuthorization": True,
+            "tryItOutEnabled": True,
+            "syntaxHighlight.theme": "obsidian",
+            "displayOperationId": True,
+            # Configuración clave para el login simple
+            "initOAuth": {
+                "useBasicAuthenticationWithAccessCodeGrant": True,
+                "defaultUsername": settings.FIRST_ADMIN_EMAIL,
+                "defaultPassword": settings.FIRST_ADMIN_PASSWORD
+            }
         }
     )
 
-    application.include_router(api_router)
+    application.include_router(api_router, prefix="/api")
+    
     return application
 
 app = create_application()
 
-origins = [
-    str(settings.FRONTEND_HOST)
-]
+# Configuración CORS
+origins = [str(settings.FRONTEND_HOST)]
 
 app.add_middleware(
     CORSMiddleware,
